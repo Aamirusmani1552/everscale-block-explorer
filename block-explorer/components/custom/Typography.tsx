@@ -61,3 +61,11 @@ export const TypographySmall: FC<Props> = ({ children }): ReactElement => {
 export const TypographyMuted: FC<Props> = ({ children }): ReactElement => {
   return <p className="text-sm text-muted-foreground">{children}</p>;
 };
+
+export const TypographyMutedH3: FC<Props> = ({ children }): ReactElement => {
+  return (
+    <h3 className="scroll-m-20 text-2xl  tracking-tight text-muted-foreground">
+      {children}
+    </h3>
+  );
+};

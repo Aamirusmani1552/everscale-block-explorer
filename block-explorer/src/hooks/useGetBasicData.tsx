@@ -1,58 +1,40 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-
 interface Statistics {
-  blocks?: {
-    ratePerSecond?: number;
-    countByCurrentValidators?: number;
+  transactions: {
+    totalCount: number;
+    lastDayCount: number;
+    ratePerSecond: number;
+    totalOrdinaryCount: number;
+    lastDayOrdinaryCount: number;
   };
-  messages?: {
-    ratePerSecond?: number;
-    totalCount?: number;
+  accounts: {
+    totalActiveCount: number;
+    totalCount: number;
   };
-  transactions?: {
-    totalCount?: number;
-    lastDayCount?: number;
-    ratePerSecond?: number;
-    totalOrdinaryCount?: number;
-    lastDayOrdinaryCount?: number;
+  depools: {
+    activeDepoolCount: number;
   };
-  accounts?: {
-    totalActiveCount?: number;
-    totalCount?: number;
-    totalSupply?: string;
-    lastDayCount?: number;
-  };
-  depools?: {
-    activeDepoolCount?: number;
-    activeParticipantsCount?: number;
-    totalStaked?: string;
-    totalRewards?: string;
-  };
-  validators?: {
-    totalCount?: number;
-    totalStaked?: string;
-    rewardsPer30Days?: string;
-    lastCycleCountDelta?: number;
+  validators: {
+    totalCount: number;
   };
 }
 
-type PageData = {
+interface Price {
+  marketCap: {
+    usd: number;
+  };
+}
+
+interface Data {
   statistics: Statistics;
-};
+  price: Price;
+}
 
 const useGetBasicData = () => {
   const query = gql`
     query {
       statistics {
-        blocks {
-          ratePerSecond
-          countByCurrentValidators
-        }
-        messages {
-          ratePerSecond
-          totalCount
-        }
         transactions {
           totalCount
           lastDayCount
@@ -63,25 +45,22 @@ const useGetBasicData = () => {
         accounts {
           totalActiveCount
           totalCount
-          totalSupply
-          lastDayCount
         }
         depools {
           activeDepoolCount
-          activeParticipantsCount
-          totalStaked
-          totalRewards
         }
         validators {
           totalCount
-          totalStaked
-          rewardsPer30Days
-          lastCycleCountDelta
+        }
+      }
+      price {
+        marketCap {
+          usd
         }
       }
     }
   `;
-  const { data, error, loading } = useQuery<PageData>(query);
+  const { data, error, loading } = useQuery<Data>(query);
 
   return { data, error, loading };
 };

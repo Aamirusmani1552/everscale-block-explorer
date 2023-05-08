@@ -8,12 +8,12 @@ type Props = {};
 
 const Header: FC<Props> = (props): ReactElement => {
   return (
-    <header className="flex py-2 gap-2 items-center w-full">
+    <nav className="flex py-4 gap-2 items-center w-full">
       <div>
         <Logo />
       </div>
       <TypographyLarge>Everscale Explorer</TypographyLarge>
-    </header>
+    </nav>
   );
 };
 
