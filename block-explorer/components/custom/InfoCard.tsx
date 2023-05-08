@@ -6,7 +6,7 @@ import numeral from "numeral";
 
 type Props = {
   itemName: string | undefined;
-  value: BigInt | number | undefined;
+  value: number | null | undefined;
 };
 
 const InfoCard: FC<Props> = ({

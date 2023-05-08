@@ -1,25 +1,10 @@
-import axios from "axios";
-import React, { useEffect } from "react";
+import { GetLatestTransactionsQuery} from "@/__generated__/graphql";
+import { GetLatestTransactions } from "@/graphql/GetLatestTransactions";
+import { useQuery } from "@apollo/client";
 
 const useGetLatestTransactions = () => {
-  useEffect(() => {
-    axios
-      .get(
-        "https://everspace.center/everscale/swagger/everscale/getTransactions",
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      )
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  return {};
+  const {data,error, loading} = useQuery(GetLatestTransactions)
+  return {data, error, loading};
 };
 
 export default useGetLatestTransactions;

@@ -69,3 +69,27 @@ export const TypographyMutedH3: FC<Props> = ({ children }): ReactElement => {
     </h3>
   );
 };
+
+export const TypographyTh: FC<Props> = ({ children }): ReactElement => {
+  return (
+    <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+      {children}
+    </th>
+  );
+};
+
+export const TypographyTr: FC<Props> = ({ children }): ReactElement => {
+  return (
+    <tr className="m-0 border-t border-l border-b border-r even:bg-muted">
+      {children}
+    </tr>
+  );
+};
+
+export const TypographyTd: FC<Props> = ({ children }): ReactElement => {
+  return (
+    <td className="px-4 py-4 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+      {children}
+    </td>
+  );
+};

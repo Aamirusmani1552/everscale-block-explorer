@@ -1,5 +1,6 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
+import { GetNetworkInfoQuery } from "@/graphql/GetNetworkInfo";
 interface Statistics {
   transactions: {
     totalCount: number;
@@ -32,35 +33,8 @@ interface Data {
 }
 
 const useGetBasicData = () => {
-  const query = gql`
-    query {
-      statistics {
-        transactions {
-          totalCount
-          lastDayCount
-          ratePerSecond
-          totalOrdinaryCount
-          lastDayOrdinaryCount
-        }
-        accounts {
-          totalActiveCount
-          totalCount
-        }
-        depools {
-          activeDepoolCount
-        }
-        validators {
-          totalCount
-        }
-      }
-      price {
-        marketCap {
-          usd
-        }
-      }
-    }
-  `;
-  const { data, error, loading } = useQuery<Data>(query);
+  
+  const { data, error, loading } = useQuery(GetNetworkInfoQuery);
 
   return { data, error, loading };
 };

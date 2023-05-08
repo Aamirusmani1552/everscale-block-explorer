@@ -1,20 +1,26 @@
 "use client";
-
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import Header from "../../components/custom/Header";
 import useGetBasicData from "@/hooks/useGetBasicData";
 import InfoCard from "../../components/custom/InfoCard";
 import CurrencyInfoCard from "../../components/custom/CurrencyInfoCard";
 import useGetLatestTransactions from "@/hooks/useGetLatestTransactions";
+import { TypographyH3, TypographyTd, TypographyTh, TypographyTr } from "../../components/custom/Typography";
+import { Button } from "../../components/ui/button";
 
 export default function Home() {
+  const tableHeadings = ['Block Id', "Transaction Id", "Account", "Workchain Id"]
   const { data } = useGetBasicData();
-  useGetLatestTransactions();
+  const { data: latestTransactionsData } = useGetLatestTransactions()
 
   if (!data) {
     return <div>Loading..</div>;
   }
 
-  console.log(data);
+  if (!latestTransactionsData) {
+    return <div>Loading...</div>
+  }
+
   return (
     <main className="flex px-2 md:px-8 min-h-screen flex-col ">
       <Header />
@@ -24,17 +30,17 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <InfoCard
               itemName={"Total Transactions"}
-              value={BigInt(data.statistics.transactions.totalCount)}
+              value={data?.statistics?.transactions?.totalCount}
             />
 
             <InfoCard
               itemName={"Total Validators"}
-              value={BigInt(data.statistics.validators.totalCount)}
+              value={data.statistics.validators.totalCount}
             />
 
             <InfoCard
               itemName={"Total Active Depools"}
-              value={BigInt(data.statistics.depools.activeDepoolCount)}
+              value={data.statistics.depools.activeDepoolCount}
             />
             <InfoCard
               itemName={"TPS"}
@@ -43,12 +49,67 @@ export default function Home() {
 
             <CurrencyInfoCard
               itemName="Ever MarketCap"
-              value={BigInt(data.price.marketCap.usd)}
+              value={data.price.marketCap.usd}
             />
           </div>
         </div>
 
-        {/* Block Info */}
+        <br />
+        <TypographyH3>Transactions</TypographyH3>
+        <br />
+
+        <div>
+          <div className="relative overflow-x-auto rounded-sm">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <TypographyTr>
+                  {
+                    tableHeadings.map((h, k) => (
+                      <TypographyTh key={k}>
+                        {h}
+                      </TypographyTh>
+                    ))
+                  }
+                </TypographyTr>
+              </thead>
+              <tbody>
+                {latestTransactionsData.blockchain?.transactions?.edges.map((i, k) => {
+                  const array = [i.node.block_id, i.node.id, i.node.account?.address, i.node.workchain_id]
+                  return (
+                    <TypographyTr key={k}>
+                      {array.map((j, k2) => {
+                        return (
+                          <TypographyTd key={k2}>
+                            <Button variant={"link"}>
+                            {j != i.node.workchain_id ?
+                              j?.toString().replace("transaction/", "").slice(0, 5) + "..." + j?.toString().replace("transaction/", "").slice(-5)
+                              : j
+                            }
+                            </Button>
+                          </TypographyTd>
+                        )
+                      })
+                      }
+                    </TypographyTr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <br />
+        {/* Next and previus page buttons */}
+        <div className="flex items-center justify-between">
+          <Button variant="outline">
+            <ChevronLeftIcon className="mr-2 h-4 w-4" />Previous
+          </Button>
+
+          <Button variant="outline">
+            Next<ChevronRightIcon className="mr-2 h-4 w-4" />
+          </Button>
+        </div>
+        <br />
       </section>
     </main>
   );
