@@ -72,7 +72,7 @@ export const TypographyMutedH3: FC<Props> = ({ children }): ReactElement => {
 
 export const TypographyTh: FC<Props> = ({ children }): ReactElement => {
   return (
-    <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+    <th className="border px-8 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
       {children}
     </th>
   );

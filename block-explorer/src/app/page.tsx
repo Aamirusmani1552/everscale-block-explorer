@@ -4,14 +4,15 @@ import Header from "../../components/custom/Header";
 import useGetBasicData from "@/hooks/useGetBasicData";
 import InfoCard from "../../components/custom/InfoCard";
 import CurrencyInfoCard from "../../components/custom/CurrencyInfoCard";
-import useGetLatestTransactions from "@/hooks/useGetLatestTransactions";
+import useGetTransactions from "@/hooks/useGetTransactions";
 import { TypographyH3, TypographyTd, TypographyTh, TypographyTr } from "../../components/custom/Typography";
 import { Button } from "../../components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   const tableHeadings = ['Block Id', "Transaction Id", "Account", "Workchain Id"]
   const { data } = useGetBasicData();
-  const { data: latestTransactionsData } = useGetLatestTransactions()
+  const { tableData: latestTransactionsData, handleGetNextTransactionData,handleGetPreviousTransactionsData } = useGetTransactions()
 
   if (!data) {
     return <div>Loading..</div>;
@@ -20,6 +21,8 @@ export default function Home() {
   if (!latestTransactionsData) {
     return <div>Loading...</div>
   }
+
+  console.log(latestTransactionsData)
 
   return (
     <main className="flex px-2 md:px-8 min-h-screen flex-col ">
@@ -80,12 +83,14 @@ export default function Home() {
                       {array.map((j, k2) => {
                         return (
                           <TypographyTd key={k2}>
-                            <Button variant={"link"}>
+                            <Link href={j == i.node.account?.address ? "/account/"+j : "#"}>
+                            <Button variant={"link"}  >
                             {j != i.node.workchain_id ?
                               j?.toString().replace("transaction/", "").slice(0, 5) + "..." + j?.toString().replace("transaction/", "").slice(-5)
                               : j
                             }
                             </Button>
+                            </Link>
                           </TypographyTd>
                         )
                       })
@@ -101,11 +106,11 @@ export default function Home() {
         <br />
         {/* Next and previus page buttons */}
         <div className="flex items-center justify-between">
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleGetPreviousTransactionsData} disabled={!latestTransactionsData.blockchain?.transactions?.pageInfo.hasPreviousPage} >
             <ChevronLeftIcon className="mr-2 h-4 w-4" />Previous
           </Button>
 
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleGetNextTransactionData} disabled={!latestTransactionsData.blockchain?.transactions?.pageInfo.hasNextPage}>
             Next<ChevronRightIcon className="mr-2 h-4 w-4" />
           </Button>
         </div>
