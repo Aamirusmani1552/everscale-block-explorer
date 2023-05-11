@@ -1,3 +1,4 @@
+import Header from "../../components/custom/Header";
 import ApolloProvider from "../apollo/ApolloProvider";
 import "./globals.css";
 import { Inter } from "next/font/google";
@@ -17,7 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ApolloProvider>{children}</ApolloProvider>
+        <ApolloProvider>
+          <main className="flex px-2 md:px-8 min-h-screen flex-col ">
+            <Header />
+            {children}
+          </main>
+        </ApolloProvider>
       </body>
     </html>
   );

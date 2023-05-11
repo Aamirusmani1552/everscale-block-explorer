@@ -25,8 +25,7 @@ export default function Home() {
   console.log(latestTransactionsData)
 
   return (
-    <main className="flex px-2 md:px-8 min-h-screen flex-col ">
-      <Header />
+    <>
       <section>
         {/* chain basic info */}
         <div className="rounded-lg py-4">
@@ -116,6 +115,6 @@ export default function Home() {
         </div>
         <br />
       </section>
-    </main>
+    </>
   );
 }
