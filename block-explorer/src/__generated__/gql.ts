@@ -13,6 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "query CheckHashType($hash:String!){\n\tblockchain{\n    block(hash: $hash){\n      flags\n    }\n    transaction(hash: $hash){\n      boc\n    }\n    message(hash: $hash){\n      dst\n    }\n  }\n}\n": types.CheckHashTypeDocument,
     "query GetAccountDetails($address:String!){\n\tblockchain{\n\t\taccount(address:$address){\n      info{\n        state_hash\n        balance\n        last_paid\n        id\n        code\n        boc\n        code_hash\n        data\n        acc_type_name\n        data_hash\n      }\n    }\n  }\n}": types.GetAccountDetailsDocument,
     "query GetBlockData($hash:String!){\n\tblockchain{\n    block(hash: $hash){\n      id\n      gen_utime\n      workchain_id\n      shard\n      vert_seq_no\n      want_merge\n      want_split\n    \tgen_validator_list_hash_short\n      tr_count\n      prev_ref{\n        end_lt\n      }\n      global_id\n      end_lt\n      start_lt\n      after_merge\n      after_split\n      before_split\n      gen_software_version\n      key_block\n      file_hash\n      account_blocks{\n        account_addr\n        tr_count\n        old_hash\n        new_hash\n      }\n      in_msg_descr{\n        msg_type\n        transaction_id\n        msg_id\n      }\n      \n      out_msg_descr{\n        msg_type\n        transaction_id\n        msg_id\n      }\n      value_flow{\n        from_prev_blk\n        to_next_blk\n        exported\n        imported\n        created\n        minted\n      }\n    }\n  }\n}\n": types.GetBlockDataDocument,
     "query GetLatestTransactions{\n\tblockchain{\n    transactions(first: 10){\n      edges{\n        node{\n          block_id\n          workchain_id\n          account{\n            address\n          }\n        \tid\n        }\n      }\n      pageInfo{\n        endCursor\n        startCursor\n        hasPreviousPage\n        hasNextPage\n      }\n    }\n  }\n}": types.GetLatestTransactionsDocument,
@@ -37,6 +38,10 @@ const documents = {
  */
 export function gql(source: string): unknown;
 
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "query CheckHashType($hash:String!){\n\tblockchain{\n    block(hash: $hash){\n      flags\n    }\n    transaction(hash: $hash){\n      boc\n    }\n    message(hash: $hash){\n      dst\n    }\n  }\n}\n"): (typeof documents)["query CheckHashType($hash:String!){\n\tblockchain{\n    block(hash: $hash){\n      flags\n    }\n    transaction(hash: $hash){\n      boc\n    }\n    message(hash: $hash){\n      dst\n    }\n  }\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
