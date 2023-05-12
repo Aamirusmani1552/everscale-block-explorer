@@ -7,6 +7,10 @@ export const GetBlockData = gql(`query GetBlockData($hash:String!){
       gen_utime
       workchain_id
       shard
+      vert_seq_no
+      want_merge
+      want_split
+    	gen_validator_list_hash_short
       tr_count
       prev_ref{
         end_lt
@@ -30,4 +34,5 @@ export const GetBlockData = gql(`query GetBlockData($hash:String!){
     }
   }
 }
+
 `);

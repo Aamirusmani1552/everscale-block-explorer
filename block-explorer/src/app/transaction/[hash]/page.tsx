@@ -9,6 +9,7 @@ import {
 import { useQuery } from "@apollo/client";
 import ClipboardCopyButton from "../../../../components/custom/ClipBoardCopy";
 import { GetTransactionData } from "@/graphql/GetTransactionData";
+import Loading from "../../../../components/custom/Loading";
 
 type Props = {
   params: {
@@ -30,7 +31,7 @@ const Account: FC<Props> = ({ params }): ReactElement => {
   });
 
   if (!data) {
-    return <div>Loading..</div>;
+    return <Loading />;
   }
 
   const fields = [

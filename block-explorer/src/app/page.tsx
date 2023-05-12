@@ -12,6 +12,7 @@ import {
 } from "../../components/custom/Typography";
 import { Button } from "../../components/ui/button";
 import Link from "next/link";
+import Loading from "../../components/custom/Loading";
 
 export default function Home() {
   const tableHeadings = [
@@ -28,14 +29,12 @@ export default function Home() {
   } = useGetTransactions();
 
   if (!data) {
-    return <div>Loading..</div>;
+    return <Loading />;
   }
 
   if (!latestTransactionsData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
-
-  console.log(latestTransactionsData);
 
   return (
     <>
@@ -110,17 +109,19 @@ export default function Home() {
                                 }
                               >
                                 <Button variant={"link"}>
-                                  {j != i.node.workchain_id
-                                    ? j
-                                        ?.toString()
-                                        .replace("transaction/", "")
-                                        .slice(0, 5) +
-                                      "..." +
-                                      j
-                                        ?.toString()
-                                        .replace("transaction/", "")
-                                        .slice(-5)
-                                    : j}
+                                  {j
+                                    ? j != i.node.workchain_id
+                                      ? j
+                                          ?.toString()
+                                          .replace("transaction/", "")
+                                          .slice(0, 5) +
+                                        "..." +
+                                        j
+                                          ?.toString()
+                                          .replace("transaction/", "")
+                                          .slice(-5)
+                                      : j
+                                    : "NA"}
                                 </Button>
                               </Link>
                             </TypographyTd>

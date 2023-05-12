@@ -1,3 +1,5 @@
+"use client";
+import { ChainContext } from "@/context/ChainContext";
 import Header from "../../components/custom/Header";
 import ApolloProvider from "../apollo/ApolloProvider";
 import "./globals.css";
@@ -18,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ApolloProvider>
-          <main className="flex px-2 md:px-8 min-h-screen flex-col ">
-            <Header />
-            {children}
-          </main>
-        </ApolloProvider>
+        <ChainContext>
+          <ApolloProvider>
+            <main className="flex px-2 md:px-8 min-h-screen flex-col ">
+              <Header />
+              {children}
+            </main>
+          </ApolloProvider>
+        </ChainContext>
       </body>
     </html>
   );

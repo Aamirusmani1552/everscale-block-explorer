@@ -8,9 +8,8 @@ import {
 } from "../../../../components/custom/Typography";
 import { useQuery } from "@apollo/client";
 import { GetAccountDetails } from "@/graphql/GetAccountDetails";
-import { CopyIcon } from "lucide-react";
-import copy from "clipboard-copy";
 import ClipboardCopyButton from "../../../../components/custom/ClipBoardCopy";
+import Loading from "../../../../components/custom/Loading";
 
 type Props = {
   params: {
@@ -24,7 +23,7 @@ const Account: FC<Props> = ({ params }): ReactElement => {
   });
 
   if (!data) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const fields = [
