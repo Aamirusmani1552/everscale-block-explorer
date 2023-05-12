@@ -1,5 +1,5 @@
 "use client";
-import { FC, ReactElement, useState } from "react";
+import { FC, ReactElement } from "react";
 import {
   TypographyH3,
   TypographyMutedH3,

@@ -25,14 +25,31 @@ export const GetBlockData = gql(`query GetBlockData($hash:String!){
       key_block
       file_hash
       account_blocks{
-        transactions{
-        	total_fees
-          transaction_id
-          
-        }
+        account_addr
+        tr_count
+        old_hash
+        new_hash
+      }
+      in_msg_descr{
+        msg_type
+        transaction_id
+        msg_id
+      }
+      
+      out_msg_descr{
+        msg_type
+        transaction_id
+        msg_id
+      }
+      value_flow{
+        from_prev_blk
+        to_next_blk
+        exported
+        imported
+        created
+        minted
       }
     }
   }
 }
-
 `);

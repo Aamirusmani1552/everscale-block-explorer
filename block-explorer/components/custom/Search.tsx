@@ -11,7 +11,7 @@ const Search = (props: Props) => {
         e.preventDefault();
       }}
     >
-      <div className="flex flex-row border-[1px] rounded-md p-2 md:max-w-[400px] flex-1">
+      <div className="flex flex-row border-[1px] gap-2 rounded-md p-2 md:max-w-[400px] flex-1">
         <input
           type="text"
           placeholder="Enter Id of transaction, account, block..."
