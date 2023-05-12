@@ -1,28 +1,41 @@
 "use client";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
-import Header from "../../components/custom/Header";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import useGetBasicData from "@/hooks/useGetBasicData";
 import InfoCard from "../../components/custom/InfoCard";
 import CurrencyInfoCard from "../../components/custom/CurrencyInfoCard";
 import useGetTransactions from "@/hooks/useGetTransactions";
-import { TypographyH3, TypographyTd, TypographyTh, TypographyTr } from "../../components/custom/Typography";
+import {
+  TypographyH3,
+  TypographyTd,
+  TypographyTh,
+  TypographyTr,
+} from "../../components/custom/Typography";
 import { Button } from "../../components/ui/button";
 import Link from "next/link";
 
 export default function Home() {
-  const tableHeadings = ['Block Id', "Transaction Id", "Account", "Workchain Id"]
+  const tableHeadings = [
+    "Block Id",
+    "Transaction Id",
+    "Account",
+    "Workchain Id",
+  ];
   const { data } = useGetBasicData();
-  const { tableData: latestTransactionsData, handleGetNextTransactionData,handleGetPreviousTransactionsData } = useGetTransactions()
+  const {
+    tableData: latestTransactionsData,
+    handleGetNextTransactionData,
+    handleGetPreviousTransactionsData,
+  } = useGetTransactions();
 
   if (!data) {
     return <div>Loading..</div>;
   }
 
   if (!latestTransactionsData) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
-  console.log(latestTransactionsData)
+  console.log(latestTransactionsData);
 
   return (
     <>
@@ -65,38 +78,58 @@ export default function Home() {
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <TypographyTr>
-                  {
-                    tableHeadings.map((h, k) => (
-                      <TypographyTh key={k}>
-                        {h}
-                      </TypographyTh>
-                    ))
-                  }
+                  {tableHeadings.map((h, k) => (
+                    <TypographyTh key={k}>{h}</TypographyTh>
+                  ))}
                 </TypographyTr>
               </thead>
               <tbody>
-                {latestTransactionsData.blockchain?.transactions?.edges.map((i, k) => {
-                  const array = [i.node.block_id, i.node.id, i.node.account?.address, i.node.workchain_id]
-                  return (
-                    <TypographyTr key={k}>
-                      {array.map((j, k2) => {
-                        return (
-                          <TypographyTd key={k2}>
-                            <Link href={j == i.node.account?.address ? "/account/"+j : "#"}>
-                            <Button variant={"link"}  >
-                            {j != i.node.workchain_id ?
-                              j?.toString().replace("transaction/", "").slice(0, 5) + "..." + j?.toString().replace("transaction/", "").slice(-5)
-                              : j
-                            }
-                            </Button>
-                            </Link>
-                          </TypographyTd>
-                        )
-                      })
-                      }
-                    </TypographyTr>
-                  )
-                })}
+                {latestTransactionsData.blockchain?.transactions?.edges.map(
+                  (i, k) => {
+                    const array = [
+                      i.node.block_id,
+                      i.node.id,
+                      i.node.account?.address,
+                      i.node.workchain_id,
+                    ];
+                    return (
+                      <TypographyTr key={k}>
+                        {array.map((j, k2) => {
+                          return (
+                            <TypographyTd key={k2}>
+                              <Link
+                                href={
+                                  j == i.node.account?.address
+                                    ? "/account/" + j
+                                    : j == i.node.id
+                                    ? "/transaction/" +
+                                      j.toString().replace("transaction/", "")
+                                    : j == i.node.block_id
+                                    ? "/block/" + j
+                                    : "#"
+                                }
+                              >
+                                <Button variant={"link"}>
+                                  {j != i.node.workchain_id
+                                    ? j
+                                        ?.toString()
+                                        .replace("transaction/", "")
+                                        .slice(0, 5) +
+                                      "..." +
+                                      j
+                                        ?.toString()
+                                        .replace("transaction/", "")
+                                        .slice(-5)
+                                    : j}
+                                </Button>
+                              </Link>
+                            </TypographyTd>
+                          );
+                        })}
+                      </TypographyTr>
+                    );
+                  }
+                )}
               </tbody>
             </table>
           </div>
@@ -105,12 +138,28 @@ export default function Home() {
         <br />
         {/* Next and previus page buttons */}
         <div className="flex items-center justify-between">
-          <Button variant="outline" onClick={handleGetPreviousTransactionsData} disabled={!latestTransactionsData.blockchain?.transactions?.pageInfo.hasPreviousPage} >
-            <ChevronLeftIcon className="mr-2 h-4 w-4" />Previous
+          <Button
+            variant="outline"
+            onClick={handleGetPreviousTransactionsData}
+            disabled={
+              !latestTransactionsData.blockchain?.transactions?.pageInfo
+                .hasPreviousPage
+            }
+          >
+            <ChevronLeftIcon className="mr-2 h-4 w-4" />
+            Previous
           </Button>
 
-          <Button variant="outline" onClick={handleGetNextTransactionData} disabled={!latestTransactionsData.blockchain?.transactions?.pageInfo.hasNextPage}>
-            Next<ChevronRightIcon className="mr-2 h-4 w-4" />
+          <Button
+            variant="outline"
+            onClick={handleGetNextTransactionData}
+            disabled={
+              !latestTransactionsData.blockchain?.transactions?.pageInfo
+                .hasNextPage
+            }
+          >
+            Next
+            <ChevronRightIcon className="mr-2 h-4 w-4" />
           </Button>
         </div>
         <br />
