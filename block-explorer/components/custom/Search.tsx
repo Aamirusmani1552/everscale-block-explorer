@@ -1,73 +1,90 @@
-import React, { useEffect, useState } from "react";
-import { CrossIcon, SearchIcon, X } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { SearchIcon, XIcon } from "lucide-react";
 import { useLazyQuery } from "@apollo/client";
 import { CheckHashTypes } from "@/graphql/CheckHashType";
 import { TypographyP } from "./Typography";
 import Link from "next/link";
+import { useDebouncedCallback } from 'use-debounce';
+import { usePathname } from "next/navigation";
 
 const Search = () => {
   const [type, setType] = useState("");
   const [hash, setHash] = useState("");
+  const pathname = usePathname()
+  const searchRef = useRef(null)
 
   const [checkType, { data }] = useLazyQuery(CheckHashTypes);
+  const debounced = useDebouncedCallback(
+    makeCall,
+    500
+  );
 
-  useEffect(() => {
-    if (data) {
-      data.blockchain?.block
-        ? setType("block")
-        : data.blockchain?.message
-        ? setType("message")
-        : data.blockchain?.message
-        ? setType("message")
-        : setType("nothing matched");
-    }
-  }, [data]);
+  async function makeCall() {
+    await checkType({ variables: { hash: hash } });
+  }
 
-  useEffect(() => {
-    if (hash != "") setType("");
-  }, [hash]);
+  function checkChange() {
+    if (data)
+      if (data?.blockchain?.block) {
+        setType("block");
+      } else if (data?.blockchain?.message) {
+        setType("message");
+      } else if (data?.blockchain?.transaction) {
+        setType("transaction");
+      } else {
+        setType("nothing matched");
+      }
+  }
+
+  
 
   return (
-    <form
-      className="flex-1 flex items-center justify-end  h-fit"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        if (hash == "" || !hash) return;
-        await checkType({ variables: { hash: hash } });
-      }}
+    <div
+      className="flex-1 flex items-center justify-end h-fit"
     >
       <div className="flex flex-row border-[1px] gap-2 rounded-md relative p-2 md:max-w-[400px] flex-1">
         <input
           type="text"
-          placeholder="Enter Id of transaction, account, block..."
+          placeholder="Enter the ID of transaction, account, block..."
           className="flex-1 border-none outline-none"
+          value={hash}
           onChange={(e) => {
-            setHash(e.target.value);
+            setHash(e.target.value)
+            setType("")
+            debounced()
           }}
         />
         <button
-          type="submit"
-          className="w-8 h-8 flex items-center justify-center border-none rounded-sm hover:bg-gray-500 text-white bg-black "
+          onClick={async (e) => {
+            e.preventDefault();
+            if (hash === "" || !hash) {
+              return;
+            }
+
+            checkChange()
+          }}
+          className="w-8 h-8 flex items-center justify-center border-none rounded-sm hover:bg-gray-500 text-white bg-black"
         >
-          <SearchIcon width={18} fontSize={18} />
+          <SearchIcon width={18} size={18} />
         </button>
 
         {type != "" && (
-          <Link
-            href={type != "nothing matched" ? "/" + type + "/" + hash : "#"}
-          >
-            <div className="absolute cursor-pointer border-[1px] rounded-sm z-10 bg-white px-4 py-2 -bottom-[50px] w-full left-0 max-w-[400px]">
+          <div className="absolute flex items-center justify-between cursor-pointer border-[1px] rounded-sm z-10 bg-white px-4 py-2 -bottom-[50px] w-full left-0 max-w-[400px]">
+            <Link href={type !== "nothing matched" ? `/${type}/${hash}` : pathname} ref={searchRef}>
               <TypographyP>
-                {type} :{" "}
-                {hash.toString().slice(0, 4) +
-                  "..." +
-                  hash.toString().slice(-4)}
+                {type}: {hash.slice(0, 4)}...{hash.slice(-4)}
               </TypographyP>
+            </Link>
+            <div onClick={(e) => {
+              setType("")
+              setHash("")
+            }}>
+              <XIcon width={15} />
             </div>
-          </Link>
+          </div>
         )}
       </div>
-    </form>
+    </div>
   );
 };
 
