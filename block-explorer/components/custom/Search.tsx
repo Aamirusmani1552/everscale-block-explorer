@@ -45,7 +45,7 @@ const Search = () => {
       <div className="flex flex-row border-[1px] gap-2 rounded-md relative p-2 md:max-w-[400px] flex-1">
         <input
           type="text"
-          placeholder="Enter the ID of transaction, account, block..."
+          placeholder="Enter the ID of transaction, message, block..."
           className="flex-1 border-none outline-none"
           value={hash}
           onChange={(e) => {
