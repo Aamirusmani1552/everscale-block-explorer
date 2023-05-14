@@ -30,7 +30,16 @@ Step 3: Install the dependencies:
   npm install
 ```
 
-Step 4: Start the project. Type the command below:
+Step 4: Create `.env.local` file and add the following environment variables
+
+```JavaScript
+    NEXT_PUBLIC_EVERCLOUD_MAINNET_URL=https://mainnet.evercloud.dev/<Your project Id>/graphql
+    NEXT_PUBLIC_EVERCLOUD_DEVNET_URL=https://devnet.evercloud.dev/<Your Project Id>/graphql
+
+```
+Note: Don't forget to add `Project Id` from evercloud dashboard in the URLs. Visit evercloud.dev and go to dashboard. Now create an account there and by creating new project switch to the security tab. You will find `Project Id` and other related details there.
+
+Step 5 Start the project. Type the command below:
 
 ```bash
   npm run dev
