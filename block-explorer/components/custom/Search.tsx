@@ -6,6 +6,7 @@ import { TypographyP } from "./Typography";
 import Link from "next/link";
 import { useDebouncedCallback } from 'use-debounce';
 import { usePathname } from "next/navigation";
+import { CheckAccountExist } from "@/graphql/CheckAccountExist";
 
 const Search = () => {
   const [type, setType] = useState("");
@@ -13,7 +14,8 @@ const Search = () => {
   const pathname = usePathname()
   const searchRef = useRef(null)
 
-  const [checkType, { data }] = useLazyQuery(CheckHashTypes);
+  const [checkType, { data, error }] = useLazyQuery(CheckHashTypes);
+  const [checkAddressType, {data: AddressData} ] = useLazyQuery(CheckAccountExist)
   const debounced = useDebouncedCallback(
     makeCall,
     500
@@ -21,6 +23,10 @@ const Search = () => {
 
   async function makeCall() {
     await checkType({ variables: { hash: hash } });
+  }
+
+  async function makeCallToAddressChecker(){
+    await checkAddressType({variables: {address: hash}})
   }
 
   function checkChange() {

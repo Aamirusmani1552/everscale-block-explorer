@@ -10,6 +10,7 @@ import { useQuery } from "@apollo/client";
 import { GetAccountDetails } from "@/graphql/GetAccountDetails";
 import ClipboardCopyButton from "../../../../components/custom/ClipBoardCopy";
 import Loading from "../../../../components/custom/Loading";
+import Error from "../../../../components/custom/Error";
 
 type Props = {
   params: {
@@ -25,6 +26,12 @@ const Account: FC<Props> = ({ params }): ReactElement => {
   if (!data) {
     return <Loading />;
   }
+
+  if (!data.blockchain?.account){
+    return <Error />
+  }
+
+  console.log(data)
 
   const fields = [
     "Account",

@@ -13,6 +13,7 @@ import {
 import { Chain, ChainContextType, Context } from "@/context/ChainContext";
 import { useRouter } from "next/navigation";
 import Search from "./Search";
+import Link from "next/link";
 
 type Props = {};
 
@@ -24,8 +25,10 @@ const Header: FC<Props> = (props): ReactElement => {
     <nav className="flex py-4 gap-2 w-full flex-col md:flex-row">
       <div className="flex flex-1">
         <div className="flex gap-2 items-center">
+          <Link href={"/"} className="flex gap-2 items-center">
           <Logo />
           <TypographyLarge>Everscale Explorer</TypographyLarge>
+          </Link>
         </div>
         <div className="flex items-center gap-4 flex-1 justify-end">
           <div className="md:flex flex-1 hidden">

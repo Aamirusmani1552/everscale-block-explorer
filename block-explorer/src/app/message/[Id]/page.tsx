@@ -10,6 +10,7 @@ import { useQuery } from "@apollo/client";
 import { GetMessageData } from "@/graphql/GetMessageData";
 import Loading from "../../../../components/custom/Loading";
 import ClipboardCopyButton from "../../../../components/custom/ClipBoardCopy";
+import Error from "../../../../components/custom/Error";
 
 type PageParams = {
   params: {
@@ -26,6 +27,10 @@ const Message: FC<PageParams> = ({ params }): ReactElement => {
 
   if (!data) {
     return <Loading />;
+  }
+
+  if(!data.blockchain?.message){
+    return <Error />
   }
 
   const values = [

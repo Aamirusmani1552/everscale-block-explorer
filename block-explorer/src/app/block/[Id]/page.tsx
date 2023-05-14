@@ -11,6 +11,7 @@ import { useQuery } from "@apollo/client";
 import ClipboardCopyButton from "../../../../components/custom/ClipBoardCopy";
 import { GetBlockData } from "@/graphql/GetBlockData";
 import Loading from "../../../../components/custom/Loading";
+import Error from "../../../../components/custom/Error";
 import {
   Tabs,
   TabsContent,
@@ -32,6 +33,10 @@ const Block: FC<Props> = ({ params }): ReactElement => {
 
   if (!data) {
     return <Loading />;
+  }
+
+  if(!data.blockchain?.block){
+    return <Error />
   }
 
   const fields = [
